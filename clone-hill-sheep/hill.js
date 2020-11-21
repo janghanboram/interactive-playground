@@ -27,6 +27,18 @@ export class Hill {
     let prev = cur
 
     let dots = []
+    cur.x += this.speed
+
+    if (cur.x > -this.gap) {
+      //화면에 나오기 전에 포인트를 생성해서 배열에 넣는다. (맨앞쪽으로 추가)
+      this.points.unshift({
+        x: -(this.gap * 2),
+        y: this.getY()
+      })
+    } else if (cur.x > this.stageWidth + this.gap) {
+      //화면을 넘어가면 해당 포인트를 배열에서 제거한다.
+      this.points.splice(-1)
+    }
 
     ctx.moveTo(cur.x, cur.y)
 
@@ -35,7 +47,7 @@ export class Hill {
 
     for (let i = 1; i < this.points.length; i++) {
       cur = this.points[i]
-
+      cur.x += this.speed
       const cx = (prev.x + cur.x) / 2
       const cy = (prev.y + cur.y) / 2
       ctx.quadraticCurveTo(prev.x, prev.y, cx, cy)
